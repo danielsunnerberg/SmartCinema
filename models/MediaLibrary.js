@@ -36,30 +36,30 @@ MediaLibrary.prototype.getVideos = function(validExtensions) {
         }
     });
 
-    function extractVideoFromDirectory(directory, validExtensions) {
-        var contents = fs.readdirSync(directory);
-        for (var i = 0; i < contents.length; i++) {
-            var video = extractVideo(contents[i], validExtensions);
-            if (video) {
-                return directory + '\\' + video;
-            }
-        }
-    }
-
-    function extractVideo(content, validExtensions) {
-        if (content.toLowerCase().indexOf('sample') > -1) {
-            return null;
-        }
-        for (i = 0; i < validExtensions.length; i++) {
-            if (S(content).endsWith(validExtensions[i])) {
-                console.log(content);
-                return content;
-            }
-        }
-        return null;
-    }
-
     return videos;
 };
+
+function extractVideoFromDirectory(directory, validExtensions) {
+    var contents = fs.readdirSync(directory);
+    for (var i = 0; i < contents.length; i++) {
+        var video = extractVideo(contents[i], validExtensions);
+        if (video) {
+            return directory + '\\' + video;
+        }
+    }
+}
+
+function extractVideo(content, validExtensions) {
+    if (content.toLowerCase().indexOf('sample') > -1) {
+        return null;
+    }
+    for (i = 0; i < validExtensions.length; i++) {
+        if (S(content).endsWith(validExtensions[i])) {
+            console.log(content);
+            return content;
+        }
+    }
+    return null;
+}
 
 exports.MediaLibrary = MediaLibrary;
