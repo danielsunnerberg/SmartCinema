@@ -1,5 +1,10 @@
 var config = {};
 
+/**
+ * IP-address to the computer running Kodi.
+ */
+config.kodi_ip = '192.168.0.19';
+
 config.share = {
 
     /**
@@ -10,7 +15,7 @@ config.share = {
     /**
      * External path to all shared media, WITH trailing (double) slash.
      */
-    external_path: 'smb://DESKTOP-JKNV2SH\\Downloads\\'
+    external_path: 'smb://DESKTOP-JKNV2SH/Downloads/'
 
 };
 
