@@ -15,21 +15,18 @@ function MediaLibrary(path) {
  *
  * @param validExtensions Array with valid file extensions
  * @param limit Max number of results to be returned
- * @returns {Array}
+ * @returns array|null
  */
 MediaLibrary.prototype.getVideos = function(validExtensions, limit) {
-    limit = limit || 100;
     var path = this.path;
     var contents = fs.readdirSync(path);
     contents.sort(function (a, b) {
         return fs.statSync(path + b).mtime.getTime() - fs.statSync(path + a).mtime.getTime();
     });
-    contents.slice(0, limit);
 
     var videos = [];
-
-    contents.forEach(function (content) {
-        content = path + content;
+    for (var i = 0; i < contents.length && (limit && videos.length < limit); i++) {
+        var content = path + contents[i];
         var video;
         if (fs.lstatSync(content).isDirectory()) {
             video = extractVideoFromDirectory(content, validExtensions);
@@ -39,9 +36,23 @@ MediaLibrary.prototype.getVideos = function(validExtensions, limit) {
         if (video) {
             videos.push(video);
         }
-    });
+    }
 
     return videos;
+};
+
+/**
+ * Retrieves the latest video file found in the library.
+ *
+ * @param validExtensions
+ * @returns string|null
+ */
+MediaLibrary.prototype.getFirstVideo = function(validExtensions) {
+    var video = this.getVideos(validExtensions, 1);
+    if (! video || video.length === 0) {
+        return null;
+    }
+    return video[0];
 };
 
 function extractVideoFromDirectory(directory, validExtensions) {
@@ -49,7 +60,7 @@ function extractVideoFromDirectory(directory, validExtensions) {
     for (var i = 0; i < contents.length; i++) {
         var video = extractVideo(contents[i], validExtensions);
         if (video) {
-            return directory + '\\' + video;
+            return directory + '/' + video;
         }
     }
 }
