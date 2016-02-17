@@ -12,8 +12,10 @@ router.get('/start', function (req, res, next) {
 
     var executor = new kodiApiExecutor.KodiApiExecutor(config.kodi_ip);
     executor.playFile(video, function(response) {
-        res.render('index', {body: response});
+        console.log(response);
     });
+
+    res.render('index', {body: 'Your request has been sent.'});
 
 });
 
