@@ -15,6 +15,7 @@ config.share = {
     /**
      * External path to all shared media, WITH trailing (double) slash.
      */
+
     external_path: 'smb://DESKTOP-JKNV2SH/Downloads/'
 
 };
