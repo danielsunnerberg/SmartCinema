@@ -12,14 +12,19 @@ function MediaLibrary(path) {
 /**
  * Lists all videos in the library. If a directory is found, an attempt will be made to include the first valid video
  * found inside.
+ *
+ * @param validExtensions Array with valid file extensions
+ * @param limit Max number of results to be returned
+ * @returns {Array}
  */
-MediaLibrary.prototype.getVideos = function(validExtensions) {
+MediaLibrary.prototype.getVideos = function(validExtensions, limit) {
+    limit = limit || 100;
     var path = this.path;
     var contents = fs.readdirSync(path);
     contents.sort(function (a, b) {
         return fs.statSync(path + b).mtime.getTime() - fs.statSync(path + a).mtime.getTime();
     });
-    contents.slice(0, 100);
+    contents.slice(0, limit);
 
     var videos = [];
 
@@ -55,7 +60,6 @@ function extractVideo(content, validExtensions) {
     }
     for (i = 0; i < validExtensions.length; i++) {
         if (S(content).endsWith(validExtensions[i])) {
-            console.log(content);
             return content;
         }
     }
